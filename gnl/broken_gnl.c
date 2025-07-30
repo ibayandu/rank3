@@ -77,9 +77,10 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	else if (dest > src)
 		return (ft_memcpy(dest, src, n));
 	i = 0;
-	while (i >= n)
+	while (i < n)
 	{
-		((char *)dest)[n] = ((char *)src)[n];
+		((char *)dest)[i] = ((char *)src)[i];
+		i++;
 	}
 	return (dest);
 }
@@ -125,9 +126,16 @@ char	*get_next_line(int fd)
 		return free(ret),NULL;
 	return (ret);
 }
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <stdio.h>
 int main()
 {
-	int fd = open("deneme.txt",O_RDWR,0644);
-	printf("%s",get_next_line(fd));
+	int fd = open("broken_gnl.c",O_RDWR,0644);
+	char *line = get_next_line(fd);
+	while (line)
+	{
+		printf("%s",line);
+		line = get_next_line(fd);
+	}
 }
